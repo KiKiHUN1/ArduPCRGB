@@ -3,10 +3,15 @@ This a simple arduino based led controller code.
 Connect the cables and the resistor like the image ![alt tag](https://github.com/KiKiHUN1/ArduPCARGB/blob/main/Arduled.jpg)
 <br/>
 In the arduino file, change the "4" number to your led strip controllable leds number. "#define NUM_LEDS 4".<br/>
+<br/>
 Change the "2" number to your data pin (green line). "#define PIN 2 "<br/>
+<br/>
 Change a the "WS2811" ledstrip name to yours. "FastLED.addLeds<WS2811, PIN, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );"(exaples below)
+<br/>
 Upload the .ino file to the arduino with the arduino IDE<br/>
+<br/>
 Compile the Arduled desktop app with visual studio.<br/>
+<br/>
 
 
 ```
