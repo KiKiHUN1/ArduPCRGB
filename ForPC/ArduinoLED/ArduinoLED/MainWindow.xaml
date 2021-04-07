@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArduinoLED"
         mc:Ignorable="d"
-        Title="MainWindow" Height="467.331" Width="505.974" ResizeMode="CanMinimize" Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged">
+        Title="ArduinoLED" Height="467.331" Width="505.974" Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="icon.ico">
     <Window.Background>
         <ImageBrush ImageSource="rgb-everything-wallpaper.jpg">
             <ImageBrush.RelativeTransform>
@@ -27,7 +27,7 @@
         <RadioButton x:Name="DefaultBTN" Content="Default" HorizontalAlignment="Left" Margin="59,145,0,0" VerticalAlignment="Top" Width="75" Checked="DefaultBTN_Checked" Grid.Column="1" Foreground="White" Height="18"/>
         <Button x:Name="sendBTN" Content="Set" HorizontalAlignment="Left" Margin="44,383,0,0" VerticalAlignment="Top" Width="75" Click="SendBTN_Click" Grid.Column="1"/>
         <Button x:Name="ExitBTN" Content="Exit" HorizontalAlignment="Left" Margin="43,383,0,0" VerticalAlignment="Top" Width="75" Click="ExitBTN_Click"/>
-        <ComboBox x:Name="dropdowncombo" HorizontalAlignment="Left" Margin="126,46,0,0" VerticalAlignment="Top" Width="331" Height="38" SelectionChanged="ComboBox_SelectionChanged" FontSize="20" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" BorderBrush="Black" Foreground="Black" Background="Black" BorderThickness="0">
+        <ComboBox x:Name="dropdowncombo" HorizontalAlignment="Left" Margin="228,46,0,0" VerticalAlignment="Top" Width="250" Height="38" SelectionChanged="ComboBox_SelectionChanged" FontSize="20" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" BorderBrush="Black" Foreground="Black" Background="Black" BorderThickness="0">
             <ComboBoxItem Content="Off" Background="Black" BorderBrush="Black" Foreground="White"/>
             <ComboBoxItem Content="RGB Loop" Background="Black" BorderBrush="Black" Foreground="White"/>
             <ComboBoxItem Content="Breathing" Background="Black" BorderBrush="Black" Foreground="White"/>
@@ -44,9 +44,7 @@
             <ComboBoxItem Content="Bouncing balls (rainbow)" Background="Black" BorderBrush="Black" Foreground="White"/>
             <ComboBoxItem Content="Meteor" Background="Black" BorderBrush="Black" Foreground="White"/>
         </ComboBox>
-
-        <TextBox x:Name="comportTX" HorizontalAlignment="Left" Height="38" Margin="56,46,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="41" TextChanged="TextBox_TextChanged" VerticalContentAlignment="Center" FontSize="18" HorizontalContentAlignment="Center" Background="#FFC1C1C1"/>
-        <Label Content="COM" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="17,54,0,358" Height="38" Width="39" VerticalContentAlignment="Center"/>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="17,46,0,355.333" Height="38" Width="44" VerticalContentAlignment="Center" Content="PORT:" Foreground="#FFFCFCFC"/>
         <Canvas x:Name="SingleColorCanvas" HorizontalAlignment="Left" Height="48" Margin="10,97,0,0" VerticalAlignment="Top" Width="347" Grid.ColumnSpan="2">
             <Button x:Name="SingleColorPicker" Content="Color picker" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click" Canvas.Left="262" Canvas.Top="13"/>
             <TextBox x:Name="SingleR" Height="23" Canvas.Left="28" TextWrapping="Wrap" Text="" Canvas.Top="10" Width="52" TextChanged="SingleR_TextChanged" Background="#FFC1C1C1"/>
@@ -88,6 +86,8 @@
             <Label x:Name="Label5" Content="" Height="32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="141" Foreground="White"/>
 
         </Canvas>
+        <ComboBox x:Name="portcombo" HorizontalAlignment="Left" Margin="61,46,0,0" VerticalAlignment="Top" Width="103" Height="38" SelectionChanged="portcombo_SelectionChanged" FontSize="20" HorizontalContentAlignment="Center"/>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="177,46,0,355.333" Height="38" Width="51" VerticalContentAlignment="Center" Content="MODE:" Foreground="#FFFCFCFC"/>
 
 
     </Grid>

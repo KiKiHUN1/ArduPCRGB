@@ -9,18 +9,18 @@ using System.Windows.Forms;
 namespace ArduinoLED
 {
     ///https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
         public MainWindow()
         {
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Length > 1) System.Diagnostics.Process.GetCurrentProcess().Kill();
             InitializeComponent();
+            var portNames = SerialPort.GetPortNames();
+            portcombo.ItemsSource = portNames;
             dropdowncombo.IsEnabled = false;
             Restrat();
-            Thread t = new Thread(incomming);
+            Thread t = new Thread(Incomming);
             t.Start();
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.BalloonTipText = "The app has been minimised. Click the tray icon to show.";
@@ -29,18 +29,19 @@ namespace ArduinoLED
             m_notifyIcon.Icon = new System.Drawing.Icon("icon.ico");
             m_notifyIcon.Click += new EventHandler(m_notifyIcon_Click);
         }
+
+        private WindowState m_storedWindowState = WindowState.Normal;
         private string writeout = "";
         int extraparameters = 0;
         int index = 0;
-        SerialPort port = new SerialPort();
+        readonly SerialPort port = new SerialPort();
 
-        private void incomming()
+        private void Incomming()
         {
            
                 port.DataReceived += Port_DataReceived;
             
         }
-
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             index = dropdowncombo.SelectedIndex;
@@ -48,7 +49,18 @@ namespace ArduinoLED
             DefaultFunc();
 
         }
-
+        private void CustomBTN_Checked(object sender, RoutedEventArgs e)
+        {
+            DefaultBTN.IsChecked = false;
+            Restrat();
+            CustomFunc();
+        }
+        private void DefaultBTN_Checked(object sender, RoutedEventArgs e)
+        {
+            CustomBTN.IsChecked = false;
+            Restrat();
+            DefaultFunc();
+        }
         #region custom
         private void CustomFunc()
         {
@@ -227,57 +239,46 @@ namespace ArduinoLED
         {
             CustomCheck();
         }
-
         private void SingleG_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void SingleB_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleR1_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleG1_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleB1_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleR2_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleG2_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleB2_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleR3_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleG3_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
         }
-
         private void TripleB3_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomCheck();
@@ -597,17 +598,9 @@ namespace ArduinoLED
         #region Serial send/read
         private void SendBTN_Click(object sender, RoutedEventArgs e)//send button
         {
-            // register the event
-            
-            //open the port
-
-
             try
             {
-                // start the communication
-                
                     port.Write(writeout);
-                
             }
             catch (Exception ex)
             {
@@ -628,24 +621,41 @@ namespace ArduinoLED
         #endregion
 
 
-        #region textboxchanged
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        #region combo/textboxchanged
+        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    dropdowncombo.IsEnabled = true;
+
+        //    try
+        //    {
+        //        port.PortName = "COM" + comportTX.Text;
+        //        port.BaudRate = 115200;
+        //        port.Open();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        port.Close();
+        //        System.Windows.MessageBox.Show("Invalid port sor port is in use!");
+
+        //    }
+
+        //}
+        private void portcombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dropdowncombo.IsEnabled = true;
-            
+
             try
             {
-                port.PortName = "COM" + comportTX.Text;
+                port.PortName = ""+ portcombo.SelectedItem;
                 port.BaudRate = 115200;
                 port.Open();
             }
             catch (Exception)
             {
                 port.Close();
-                System.Windows.MessageBox.Show("Invalid port!");
-                
+                System.Windows.MessageBox.Show("Invalid port or port is in use!");
+
             }
-           
         }
         #endregion
 
@@ -684,25 +694,12 @@ namespace ArduinoLED
             Label4.Content = "";
             Label5.Content = "";
         }
+
+        #region notifyicon
         private void ExitBTN_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
         }
-
-        private void CustomBTN_Checked(object sender, RoutedEventArgs e)
-        {
-            DefaultBTN.IsChecked = false;
-            Restrat();
-            CustomFunc();
-        }
-
-        private void DefaultBTN_Checked(object sender, RoutedEventArgs e)
-        {
-            CustomBTN.IsChecked = false;
-            Restrat();
-            DefaultFunc();
-        }
-        
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
            
@@ -713,7 +710,6 @@ namespace ArduinoLED
             m_notifyIcon = null;
         }
 
-        private WindowState m_storedWindowState = WindowState.Normal;
         void OnStateChanged(object sender, EventArgs args)
         {
             if (WindowState == WindowState.Minimized)
@@ -745,5 +741,7 @@ namespace ArduinoLED
             if (m_notifyIcon != null)
                 m_notifyIcon.Visible = show;
         }
+        #endregion
+
     }
 }
